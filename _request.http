@@ -1,0 +1,49 @@
+### register
+POST http://localhost:3000/v1/auth/signup
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
+Content-Type: application/json
+
+{
+    "name": "op",
+    "email": "op@mail.com",
+    "password": "1234"
+}
+
+### login
+POST http://localhost:3000/v1/auth/signin
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
+Content-Type: application/json
+
+{
+    "email": "vv@mail.com",
+    "password": "1234"
+}
+
+###  get profile
+GET http://localhost:3000/v1/profile
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+
+###  update profile
+PATCH  http://localhost:3000/v1/profile
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+Content-Type: application/json
+
+{
+    "avatar": "http://localhost:3000/v1/files/1691339653059_im1qwnz2yp",
+    "name": "vv"
+}
+
+### get file
+GET http://localhost:3000/v1/files/tt.jpg?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+
+### upload file
+POST http://localhost:3000/v1/files/upload
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+{
+    "file": 
+}

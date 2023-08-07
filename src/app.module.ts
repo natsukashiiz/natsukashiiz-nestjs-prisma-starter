@@ -7,6 +7,7 @@ import { SignHistoryModule } from './sign-history/sign-history.module';
 import { FilesModule } from './files/files.module';
 import { RedisModule } from './redis/redis.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -19,5 +20,6 @@ import { GatewayModule } from './gateway/gateway.module';
     RedisModule,
     GatewayModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

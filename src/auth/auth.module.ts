@@ -13,14 +13,7 @@ import { RedisModule } from 'src/redis/redis.module';
   imports: [
     PrismaModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.SECRET_KEY,
-      signOptions: {
-        issuer: 'http://localhost:3000',
-        expiresIn: process.env.EXPIRESIN,
-        algorithm: 'HS512',
-      },
-    }),
+    JwtModule.register({}),
     UsersModule,
     SignHistoryModule,
     RedisModule,

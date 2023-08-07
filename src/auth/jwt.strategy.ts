@@ -15,8 +15,36 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.SECRET_KEY,
+      secretOrKey: process.env.JWT_ACCESS_SECRET_KEY,
     });
+  }
+
+  generateToken(data: {
+    sub?: string;
+    uid?: number;
+    name?: string;
+    email?: string;
+    avatar?: string;
+    refId?: string;
+    secret: string;
+    expiresIn: string;
+  }): string {
+    return this.jwt.sign(
+      {
+        sub: data.sub,
+        uid: data.uid,
+        name: data.name,
+        email: data.email,
+        avatar: data.avatar,
+        refId: data.refId,
+      },
+      {
+        secret: data.secret,
+        expiresIn: data.expiresIn,
+        algorithm: 'HS256',
+        issuer: process.env.JWT_ISSUER,
+      },
+    );
   }
 
   async validate(payload: { uid: number }) {

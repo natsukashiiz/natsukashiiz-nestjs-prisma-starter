@@ -4,8 +4,8 @@ User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit
 Content-Type: application/json
 
 {
-    "name": "op",
-    "email": "op@mail.com",
+    "name": "boomk",
+    "email": "boomk@mail.com",
     "password": "1234"
 }
 
@@ -15,7 +15,7 @@ User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit
 Content-Type: application/json
 
 {
-    "email": "vv@mail.com",
+    "email": "boomz@mail.com",
     "password": "1234"
 }
 

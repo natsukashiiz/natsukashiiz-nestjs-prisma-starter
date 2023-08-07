@@ -1,6 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import CommonUtils from 'src/utils/CommonUtils';
-import ResultUtils, { Result } from 'src/utils/ResultUtils';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignInDto, SignUpDto } from './dto/auth-dto';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
@@ -10,6 +8,7 @@ import { UsersService } from 'src/users/users.service';
 import { SignHistoryService } from './../sign-history/sign-history.service';
 import { RedisService } from 'src/redis/redis.service';
 import { randomUUID } from 'crypto';
+import { JwtStrategy } from './jwt.strategy';
 
 export const roundsOfHashing = 10;
 
@@ -20,6 +19,7 @@ export class AuthService {
     private signHistoryService: SignHistoryService,
     private jwt: JwtService,
     private redis: RedisService,
+    private jwtStrategy: JwtStrategy,
   ) {}
 
   private getUserAgent(http: Request): string {
@@ -59,77 +59,60 @@ export class AuthService {
       device: device,
     });
 
-    const sub = randomUUID();
-
-    const token = this.jwt.sign({
-      sub: sub,
+    const uuid = randomUUID().toString();
+    const accessToken = this.jwtStrategy.generateToken({
+      sub: uuid,
       uid: user.id,
-      name: user.name,
+      name: user.name as string,
       email: user.email,
-      avatar: user.avatar,
+      avatar: user.avatar as string,
+      secret: process.env.JWT_ACCESS_SECRET_KEY,
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
+    });
+    const refreshToken = this.jwtStrategy.generateToken({
+      refId: uuid,
+      secret: process.env.JWT_REFRESH_SECRET_KEY,
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     });
 
-    const payload = this.jwt.decode(token) as TokenPayload;
+    const payload = this.jwt.decode(accessToken) as TokenPayload;
     const expiresIn = payload.exp;
     const timeout = (expiresIn - Math.floor(Date.now() / 1000)) * 1000;
 
-    await this.redis.set(RedisService.TOKEN + user.id, sub, timeout);
+    await this.redis.set(RedisService.TOKEN + user.id, uuid, timeout);
 
     return {
-      token,
+      accessToken,
+      refreshToken,
     };
   }
 
-  async signIn(
-    req: SignInDto,
-    http: Request,
-    ip: string,
-  ): Promise<Result<AuthEntity>> {
-    if (CommonUtils.isEmpty(req.email)) {
-      return ResultUtils.error('Email is required');
-    }
-
-    if (CommonUtils.isEmpty(req.password)) {
-      return ResultUtils.error('Password is required');
-    }
-
+  async signIn(req: SignInDto, http: Request, ip: string) {
     const user = await this.usersService.findByEmail(req.email, true);
 
     if (!user) {
-      return ResultUtils.error('Email or password is incorrect');
+      throw new BadRequestException('Email or password is incorrect');
     }
 
     const isPasswordValid = await bcrypt.compare(req.password, user.password);
 
     if (!isPasswordValid) {
-      return ResultUtils.error('Email or password is incorrect');
+      throw new BadRequestException('Email or password is incorrect');
     }
 
     const loggedIn = await this.redis.get(RedisService.TOKEN + user.id);
     if (loggedIn) {
-      return ResultUtils.error('User already logged in');
+      throw new BadRequestException('User already logged in');
     }
 
-    return ResultUtils.success(await this.createToken(user, http, ip));
+    return await this.createToken(user, http, ip);
   }
 
-  async signUp(
-    req: SignUpDto,
-    http: Request,
-    ip: string,
-  ): Promise<Result<AuthEntity>> {
-    if (CommonUtils.isEmpty(req.email)) {
-      return ResultUtils.error('Email is required');
-    }
-
-    if (CommonUtils.isEmpty(req.password)) {
-      return ResultUtils.error('Password is required');
-    }
-
+  async signUp(req: SignUpDto, http: Request, ip: string) {
     const hasEmail = await this.usersService.findByEmail(req.email);
 
     if (hasEmail) {
-      return ResultUtils.error('Email already exists');
+      throw new BadRequestException('Email already exists');
     }
 
     const user = await this.usersService.create({
@@ -138,6 +121,6 @@ export class AuthService {
       password: req.password,
     });
 
-    return ResultUtils.success(await this.createToken(user, http, ip));
+    return await this.createToken(user, http, ip);
   }
 }

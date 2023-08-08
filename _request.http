@@ -4,8 +4,8 @@ User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit
 Content-Type: application/json
 
 {
-    "name": "boomk",
-    "email": "boomk@mail.com",
+    "name": "boomt",
+    "email": "boomt@mail.com",
     "password": "1234"
 }
 
@@ -22,26 +22,26 @@ Content-Type: application/json
 ###  get profile
 GET http://localhost:3000/v1/profile
 User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3NTZiMjE0ZGMzNDI0NWE5OWMzMDEwM2MyMzRlMmM5ZSIsInVpZCI6MTQsIm5hbWUiOiJib29tdCIsImVtYWlsIjoiYm9vbXRAbWFpbC5jb20iLCJhdmF0YXIiOm51bGwsImlhdCI6MTY5MTUwMDkyNSwiZXhwIjoxNjkxNTA0NTI1LCJpc3MiOiJodHRwczovL25hdHN1a2FzaGlpei54eXoifQ.aJeUzuNroUnex_3F-TKYd-8Z4USEmrJqHHGbs0IxOPA
 
 ###  update profile
 PATCH  http://localhost:3000/v1/profile
 User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3NTZiMjE0ZGMzNDI0NWE5OWMzMDEwM2MyMzRlMmM5ZSIsInVpZCI6MTQsIm5hbWUiOiJib29tdCIsImVtYWlsIjoiYm9vbXRAbWFpbC5jb20iLCJhdmF0YXIiOm51bGwsImlhdCI6MTY5MTUwMDkyNSwiZXhwIjoxNjkxNTA0NTI1LCJpc3MiOiJodHRwczovL25hdHN1a2FzaGlpei54eXoifQ.aJeUzuNroUnex_3F-TKYd-8Z4USEmrJqHHGbs0IxOPA
 Content-Type: application/json
 
 {
     "avatar": "http://localhost:3000/v1/files/1691339653059_im1qwnz2yp",
-    "name": "vv"
+    "name": "boom T"
 }
 
 ### get file
-GET http://localhost:3000/v1/files/tt.jpg?token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+GET http://localhost:3000/v1/files/1691339653059_im1qwnz2yp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3NTZiMjE0ZGMzNDI0NWE5OWMzMDEwM2MyMzRlMmM5ZSIsInVpZCI6MTQsIm5hbWUiOiJib29tdCIsImVtYWlsIjoiYm9vbXRAbWFpbC5jb20iLCJhdmF0YXIiOm51bGwsImlhdCI6MTY5MTUwMDkyNSwiZXhwIjoxNjkxNTA0NTI1LCJpc3MiOiJodHRwczovL25hdHN1a2FzaGlpei54eXoifQ.aJeUzuNroUnex_3F-TKYd-8Z4USEmrJqHHGbs0IxOPA
 
 ### upload file
 POST http://localhost:3000/v1/files/upload
 User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) BC3 iOS/3.12.7 (build 538; iPhone 11 Pro Max; iOS 14.7.1)
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5MTI2MDk3MCwiZXhwIjoxNjkyNTU2OTcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.qikvg_Ixbu-6r_YiFx_TaQZqJR3aXD9vJaCW-WawgVIB7Gk91N4cHYzaLg3tgsW1AQWIiADivHbP7S36I1tn1A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3NTZiMjE0ZGMzNDI0NWE5OWMzMDEwM2MyMzRlMmM5ZSIsInVpZCI6MTQsIm5hbWUiOiJib29tdCIsImVtYWlsIjoiYm9vbXRAbWFpbC5jb20iLCJhdmF0YXIiOm51bGwsImlhdCI6MTY5MTUwMDkyNSwiZXhwIjoxNjkxNTA0NTI1LCJpc3MiOiJodHRwczovL25hdHN1a2FzaGlpei54eXoifQ.aJeUzuNroUnex_3F-TKYd-8Z4USEmrJqHHGbs0IxOPA
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 {

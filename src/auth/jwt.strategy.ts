@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { RedisService } from 'src/redis/redis.service';
 import { UsersService } from 'src/users/users.service';
-import { TokenPayload } from './entities/auth.entity';
+import { TokenPayload } from './auth.model';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -76,10 +76,19 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     try {
-      await this.jwt.verify(token);
+      await this.jwt.verify(token, {
+        secret: process.env.JWT_ACCESS_SECRET_KEY,
+      });
+      const user = this.validate(decoded);
+      if (!user) {
+        Logger.log(`JwtStrategy-[verify](invalid user). token:${token}`);
+        return false;
+      }
       return true;
     } catch (error) {
-      Logger.log(`JwtStrategy-[verify]. token:${token}, error:${error}`);
+      Logger.log(
+        `JwtStrategy-[verify](unknown). token:${token}, error:${error}`,
+      );
       return false;
     }
   }

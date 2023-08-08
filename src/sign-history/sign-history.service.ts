@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, SignHistory } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SignHistoryService {
@@ -8,6 +8,22 @@ export class SignHistoryService {
 
   async findAll() {
     return await this.prisma.signHistory.findMany();
+  }
+
+  async findByUid(uid: number) {
+    return await this.prisma.signHistory.findMany({
+      where: {
+        uid: uid,
+      },
+      select: {
+        device: true,
+        ip: true,
+        cdt: true,
+      },
+      orderBy: {
+        cdt: 'desc',
+      },
+    });
   }
 
   async countByUid(uid: number) {

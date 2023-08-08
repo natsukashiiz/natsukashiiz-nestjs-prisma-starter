@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { UpdateUserDto } from 'src/users/dto/users-dto';
 import { User } from '@prisma/client';
 import { EventGateway } from 'src/gateway/events.gateway';
+import { UserUpdate } from 'src/users/users.model';
 
 @Injectable()
 export class ProfileService {
@@ -15,7 +15,7 @@ export class ProfileService {
     return await this.usersService.findById(auth.id);
   }
 
-  async update(auth: User, req: UpdateUserDto) {
+  async update(auth: User, req: UserUpdate) {
     this.events.handleEvent('update:' + auth.id);
     return await this.usersService.update(auth.id, req);
   }

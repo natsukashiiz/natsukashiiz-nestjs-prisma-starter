@@ -9,24 +9,24 @@ export class RedisService {
 
   async get(key: string) {
     const res = await this.cache.get(key);
-    Logger.debug('RedisService-[get]. key:' + key + ', value:' + res);
+    Logger.log('RedisService-[get]. key:' + key + ', value:' + res);
     return res;
   }
 
   async set(key: string, value: unknown, ttl?: number) {
-    Logger.debug(
+    Logger.log(
       'RedisService-[set]. key:' + key + ', value:' + value + ', ttl:' + ttl,
     );
     await this.cache.set(key, value, ttl);
   }
 
   async remove(key: string) {
-    Logger.debug('RedisService-[remove]. key:' + key);
+    Logger.log('RedisService-[remove]. key:' + key);
     await this.cache.del(key);
   }
 
   async clear() {
-    Logger.debug('RedisService-[clear]');
+    Logger.log('RedisService-[clear]');
     await this.cache.reset();
   }
 }

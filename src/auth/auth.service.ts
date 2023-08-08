@@ -1,14 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { SignInDto, SignUpDto } from './dto/auth-dto';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
-import { AuthEntity, TokenPayload } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import { SignHistoryService } from './../sign-history/sign-history.service';
 import { RedisService } from 'src/redis/redis.service';
 import { randomUUID } from 'crypto';
 import { JwtStrategy } from './jwt.strategy';
+import { SignIn, SignUp, TokenPayload, TokenResponse } from './auth.model';
 
 export const roundsOfHashing = 10;
 
@@ -48,7 +47,7 @@ export class AuthService {
     user: Prisma.UserWhereUniqueInput,
     http: Request,
     ip: string,
-  ): Promise<AuthEntity> {
+  ): Promise<TokenResponse> {
     const ua = this.getUserAgent(http);
     const device = this.getDevice(ua);
 
@@ -59,7 +58,7 @@ export class AuthService {
       device: device,
     });
 
-    const uuid = randomUUID().toString();
+    const uuid = randomUUID().toString().replaceAll('-', '');
     const accessToken = this.jwtStrategy.generateToken({
       sub: uuid,
       uid: user.id,
@@ -87,38 +86,38 @@ export class AuthService {
     };
   }
 
-  async signIn(req: SignInDto, http: Request, ip: string) {
-    const user = await this.usersService.findByEmail(req.email, true);
+  async signIn(body: SignIn, http: Request, ip: string) {
+    const user = await this.usersService.findByEmail(body.email, true);
 
     if (!user) {
       throw new BadRequestException('Email or password is incorrect');
     }
 
-    const isPasswordValid = await bcrypt.compare(req.password, user.password);
+    const isPasswordValid = await bcrypt.compare(body.password, user.password);
 
     if (!isPasswordValid) {
       throw new BadRequestException('Email or password is incorrect');
     }
 
-    const loggedIn = await this.redis.get(RedisService.TOKEN + user.id);
-    if (loggedIn) {
-      throw new BadRequestException('User already logged in');
-    }
+    // const loggedIn = await this.redis.get(RedisService.TOKEN + user.id);
+    // if (loggedIn) {
+    //   throw new BadRequestException('User already logged in');
+    // }
 
     return await this.createToken(user, http, ip);
   }
 
-  async signUp(req: SignUpDto, http: Request, ip: string) {
-    const hasEmail = await this.usersService.findByEmail(req.email);
+  async signUp(body: SignUp, http: Request, ip: string) {
+    const hasEmail = await this.usersService.findByEmail(body.email);
 
     if (hasEmail) {
       throw new BadRequestException('Email already exists');
     }
 
     const user = await this.usersService.create({
-      name: req.name,
-      email: req.email,
-      password: req.password,
+      name: body.name,
+      email: body.email,
+      password: body.password,
     });
 
     return await this.createToken(user, http, ip);

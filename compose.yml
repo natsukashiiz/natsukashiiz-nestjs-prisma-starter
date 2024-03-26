@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mysql:
+    image: biarms/mysql:5.7
+    container_name: mysqldb
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - server-net
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - server-net
+
+volumes:
+  mysql-data:
+networks:
+  server-net:

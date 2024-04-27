@@ -19,6 +19,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { GoogleAuthGuard } from './guards/google-auth.guard';
+import { FacebookAuthGuard } from './guards/facebook-auth.guard';
 
 @Controller('/v1/auth')
 @ApiTags('Authentication')
@@ -65,5 +66,18 @@ export class AuthController {
   @Get('/google/callback')
   googleAuthRedirect(@Req() req: any, @Ip() ip: string) {
     return this.authService.googleAuth(req, ip);
+  }
+
+  // facebook login
+  @UseGuards(FacebookAuthGuard)
+  @Get('/facebook')
+  facebookAuth() {
+    // facebook oauth process
+  }
+
+  @UseGuards(FacebookAuthGuard)
+  @Get('/facebook/callback')
+  facebookAuthRedirect(@Req() req: any, @Ip() ip: string) {
+    return this.authService.facebookAuth(req, ip);
   }
 }

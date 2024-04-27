@@ -13,6 +13,7 @@ datasource db {
 enum AuthProvider {
     LOCAL
     GOOGLE
+    FACEBOOK
 }
 
 model User {

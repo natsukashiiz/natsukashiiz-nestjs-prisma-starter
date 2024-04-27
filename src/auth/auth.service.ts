@@ -141,4 +141,22 @@ export class AuthService {
 
     return await this.createToken(user, http, ip);
   }
+
+  async facebookAuth(http: any, ip: string) {
+    const body = http.user as GoogleUser;
+
+    let user = await this.usersService.findByEmail(body.email);
+
+    if (!user) {
+      user = await this.usersService.create({
+        name: body.name,
+        email: body.email,
+        password: randomUUID(),
+        avatar: body.picture,
+        provider: 'FACEBOOK',
+      });
+    }
+
+    return await this.createToken(user, http, ip);
+  }
 }

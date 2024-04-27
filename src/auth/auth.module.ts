@@ -9,6 +9,7 @@ import { UsersModule } from 'src/users/users.module';
 import { SignHistoryModule } from 'src/sign-history/sign-history.module';
 import { RedisModule } from 'src/redis/redis.module';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { FacebookStrategy } from './strategies/facebook.strategy';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
     RedisModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, FacebookStrategy],
   exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

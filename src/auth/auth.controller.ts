@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Req, Ip } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  Ip,
+  Get,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignIn, SignUp } from './auth.model';
 import {
@@ -9,6 +18,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { GoogleAuthGuard } from './guards/google-auth.guard';
 
 @Controller('/v1/auth')
 @ApiTags('Authentication')
@@ -42,5 +52,18 @@ export class AuthController {
   })
   signUp(@Body() body: SignUp, @Req() req: Request, @Ip() ip: string) {
     return this.authService.signUp(body, req, ip);
+  }
+
+  // google login
+  @UseGuards(GoogleAuthGuard)
+  @Get('/google')
+  googleAuth() {
+    // google oauth process
+  }
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('/google/callback')
+  googleAuthRedirect(@Req() req: any, @Ip() ip: string) {
+    return this.authService.googleAuth(req, ip);
   }
 }

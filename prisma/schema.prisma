@@ -10,14 +10,20 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum AuthProvider {
+    LOCAL
+    GOOGLE
+}
+
 model User {
-    id       Int      @id @default(autoincrement())
-    name     String   @db.VarChar(30)
-    email    String   @unique @db.VarChar(30)
-    password String   @db.VarChar(255)
-    avatar   String?  @db.VarChar(255)
-    cdt      DateTime @default(now())
-    udt      DateTime @updatedAt
+    id       Int           @id @default(autoincrement())
+    name     String        @db.VarChar(30)
+    email    String        @unique @db.VarChar(30)
+    password String        @db.VarChar(255)
+    avatar   String?       @db.VarChar(255)
+    provider AuthProvider? @default(LOCAL)
+    cdt      DateTime      @default(now())
+    udt      DateTime      @updatedAt
 
     SignHistory SignHistory[] @relation(name: "user_sign_history")
 }

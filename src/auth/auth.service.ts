@@ -6,8 +6,9 @@ import { UsersService } from 'src/users/users.service';
 import { SignHistoryService } from './../sign-history/sign-history.service';
 import { RedisService } from 'src/redis/redis.service';
 import { randomUUID } from 'crypto';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { SignIn, SignUp, TokenPayload, TokenResponse } from './auth.model';
+import { GoogleUser } from './strategies/google.strategy';
 
 export const roundsOfHashing = 10;
 
@@ -119,6 +120,24 @@ export class AuthService {
       email: body.email,
       password: body.password,
     });
+
+    return await this.createToken(user, http, ip);
+  }
+
+  async googleAuth(http: any, ip: string) {
+    const body = http.user as GoogleUser;
+
+    let user = await this.usersService.findByEmail(body.email);
+
+    if (!user) {
+      user = await this.usersService.create({
+        name: body.name,
+        email: body.email,
+        password: randomUUID(),
+        avatar: body.picture,
+        provider: 'GOOGLE',
+      });
+    }
 
     return await this.createToken(user, http, ip);
   }

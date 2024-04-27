@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { $Enums, Prisma } from '@prisma/client';
 
 export class UserRequest implements Prisma.UserCreateInput {
   name: string;
   email: string;
   password: string;
+  avatar?: string;
+  provider?: $Enums.AuthProvider;
 }
 
 export class UserUpdate implements Prisma.UserUpdateInput {

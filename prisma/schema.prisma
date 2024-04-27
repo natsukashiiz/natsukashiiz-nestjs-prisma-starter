@@ -19,13 +19,13 @@ model User {
     cdt      DateTime @default(now())
     udt      DateTime @updatedAt
 
-    SignHistory SignHistory[]
+    SignHistory SignHistory[] @relation(name: "user_sign_history")
 }
 
 model SignHistory {
     id     Int      @id @default(autoincrement())
     uid    Int      @map("uid")
-    User   User     @relation(fields: [uid], references: [id])
+    User   User     @relation(name: "user_sign_history", fields: [uid], references: [id])
     ua     String   @db.VarChar(255)
     ip     String   @db.VarChar(32)
     device String   @db.VarChar(30)

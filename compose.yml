@@ -2,7 +2,7 @@ version: '3'
 services:
   mysql:
     image: biarms/mysql:5.7
-    container_name: mysqldb
+    container_name: mysqldb_nest101
     environment:
       MYSQL_DATABASE: mydb
       MYSQL_ROOT_PASSWORD: 1234
@@ -15,7 +15,7 @@ services:
 
   redis:
     image: redis
-    container_name: redis
+    container_name: redis_nest101
     ports:
       - "6379:6379"
     networks:

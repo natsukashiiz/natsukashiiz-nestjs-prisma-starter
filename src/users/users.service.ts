@@ -21,7 +21,7 @@ export class UsersService {
     });
   }
 
-  async findById(id: number, password = false): Promise<UserResponse> {
+  async findById(id: number, selectPassword = false): Promise<UserResponse> {
     return await this.prisma.user.findUnique({
       where: { id: id },
       select: {
@@ -29,29 +29,35 @@ export class UsersService {
         name: true,
         avatar: true,
         email: true,
-        password: password,
+        password: selectPassword,
         cdt: true,
       },
     });
   }
 
-  async findByEmail(email: string, password = false): Promise<UserResponse> {
+  async findByEmail(
+    email: string,
+    selectPassword = false,
+  ): Promise<UserResponse> {
     return await this.prisma.user.findUnique({
       where: {
-        email: email,
+        email,
       },
       select: {
         id: true,
         name: true,
         avatar: true,
         email: true,
-        password: password,
+        password: selectPassword,
         cdt: true,
       },
     });
   }
 
-  async create(req: UserRequest, password = false): Promise<UserResponse> {
+  async create(
+    req: UserRequest,
+    selectPassword = false,
+  ): Promise<UserResponse> {
     req.password = await bcrypt.hash(req.password, roundsOfHashing);
     return await this.prisma.user.create({
       data: req,
@@ -60,7 +66,7 @@ export class UsersService {
         name: true,
         avatar: true,
         email: true,
-        password: password,
+        password: selectPassword,
         cdt: true,
       },
     });
@@ -69,7 +75,7 @@ export class UsersService {
   async update(
     id: number,
     req: UserUpdate,
-    password = false,
+    selectPassword = false,
   ): Promise<UserResponse> {
     if (req.password) {
       req.password = await bcrypt.hash(req.password, roundsOfHashing);
@@ -83,7 +89,7 @@ export class UsersService {
         name: true,
         avatar: true,
         email: true,
-        password: password,
+        password: selectPassword,
         cdt: true,
       },
     });

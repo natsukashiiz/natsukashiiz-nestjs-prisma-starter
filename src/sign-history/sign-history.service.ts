@@ -13,7 +13,7 @@ export class SignHistoryService {
   async findByUid(uid: number) {
     return await this.prisma.signHistory.findMany({
       where: {
-        uid: uid,
+        uid,
       },
       select: {
         device: true,
@@ -29,7 +29,7 @@ export class SignHistoryService {
   async countByUid(uid: number) {
     return await this.prisma.signHistory.count({
       where: {
-        uid: uid,
+        uid,
       },
     });
   }

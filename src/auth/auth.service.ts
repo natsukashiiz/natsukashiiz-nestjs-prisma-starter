@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -21,6 +21,8 @@ export class AuthService {
     private redis: RedisService,
     private jwtStrategy: JwtStrategy,
   ) {}
+
+  private readonly logger = new Logger(AuthService.name);
 
   private getUserAgent(http: Request): string {
     return http.headers['user-agent'];
@@ -91,13 +93,19 @@ export class AuthService {
     const user = await this.usersService.findByEmail(body.email, true);
 
     if (!user) {
-      throw new BadRequestException('Email or password is incorrect');
+      this.logger.warn(
+        `SignIn-[block]:(not found email). email: ${body.email}`,
+      );
+      throw new BadRequestException('Invalid Email or password');
     }
 
     const isPasswordValid = await bcrypt.compare(body.password, user.password);
 
     if (!isPasswordValid) {
-      throw new BadRequestException('Email or password is incorrect');
+      this.logger.warn(
+        `SignIn-[block]:(invalid password). email: ${body.email}`,
+      );
+      throw new BadRequestException('Invalid Email or Password');
     }
 
     // const loggedIn = await this.redis.get(RedisService.TOKEN + user.id);
@@ -112,6 +120,9 @@ export class AuthService {
     const hasEmail = await this.usersService.findByEmail(body.email);
 
     if (hasEmail) {
+      this.logger.warn(
+        `SignUp-[block]:(duplicate email). email: ${body.email}`,
+      );
       throw new BadRequestException('Email already exists');
     }
 

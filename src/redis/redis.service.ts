@@ -7,6 +7,11 @@ export class RedisService {
 
   public static TOKEN = 'TOKEN:';
 
+  async isConnected() {
+    this.cache.set('CONNECTED', true);
+    return (await this.cache.get('CONNECTED')) == true;
+  }
+
   async get(key: string) {
     const res = await this.cache.get(key);
     Logger.log('RedisService-[get]. key:' + key + ', value:' + res);

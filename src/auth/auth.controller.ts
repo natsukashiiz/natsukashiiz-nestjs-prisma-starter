@@ -9,11 +9,12 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignIn, SignUp } from './auth.model';
+import { SignIn, SignUp, TokenResponse } from './auth.model';
 import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiExcludeEndpoint,
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiTags,
@@ -30,10 +31,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signin')
-  @ApiOperation({ summary: 'Sign in' })
   @ApiBody({ type: SignIn })
   @ApiCreatedResponse({
     description: 'The user has been successfully logged in.',
+    type: TokenResponse,
   })
   @ApiBadRequestResponse({
     description: 'The user does not exist or the password is incorrect.',
@@ -43,10 +44,10 @@ export class AuthController {
   }
 
   @Post('/signup')
-  @ApiOperation({ summary: 'Sign up' })
   @ApiBody({ type: SignUp })
   @ApiCreatedResponse({
     description: 'The user has been successfully registered.',
+    type: TokenResponse,
   })
   @ApiBadRequestResponse({
     description: 'The user already exists or the password is incorrect.',
@@ -62,6 +63,7 @@ export class AuthController {
     // google oauth process
   }
 
+  @ApiExcludeEndpoint()
   @UseGuards(GoogleAuthGuard)
   @Get('/google/callback')
   googleAuthRedirect(@Req() req: any, @Ip() ip: string) {
@@ -75,6 +77,7 @@ export class AuthController {
     // facebook oauth process
   }
 
+  @ApiExcludeEndpoint()
   @UseGuards(FacebookAuthGuard)
   @Get('/facebook/callback')
   facebookAuthRedirect(@Req() req: any, @Ip() ip: string) {

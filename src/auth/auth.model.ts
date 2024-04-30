@@ -42,11 +42,17 @@ export class SignUp extends SignIn implements Prisma.UserCreateInput {
 
 export class TokenResponse {
   @ApiProperty({
-    description: 'Token of the user',
+    description: 'Access Token of the user',
     type: String,
     required: true,
   })
   accessToken: string;
+
+  @ApiProperty({
+    description: 'Refresh Token of the user',
+    type: String,
+    required: true,
+  })
   refreshToken: string;
 }
 

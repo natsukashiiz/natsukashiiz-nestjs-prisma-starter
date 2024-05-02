@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -90,13 +96,16 @@ export class AuthService {
     const user = await this.usersService.findByEmail(body.email, true);
 
     if (!user) {
-      throw new BadRequestException('Email or password is incorrect');
+      throw new HttpException(
+        'Email or password is incorrect',
+        HttpStatus.EXPECTATION_FAILED,
+      );
     }
 
     const isPasswordValid = await bcrypt.compare(body.password, user.password);
 
     if (!isPasswordValid) {
-      throw new BadRequestException('Email or password is incorrect');
+      throw new NotFoundException('Email or password is incorrect');
     }
 
     // const loggedIn = await this.redis.get(RedisService.TOKEN + user.id);

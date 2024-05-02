@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -20,6 +20,8 @@ export class AuthService {
     private redis: RedisService,
     private jwtStrategy: JwtStrategy,
   ) {}
+
+  private readonly logger = new Logger(AuthService.name);
 
   private getUserAgent(http: Request): string {
     return http.headers['user-agent'];
@@ -62,9 +64,9 @@ export class AuthService {
     const accessToken = this.jwtStrategy.generateToken({
       sub: uuid,
       uid: user.id,
-      name: user.name as string,
+      name: String(user.name),
       email: user.email,
-      avatar: user.avatar as string,
+      avatar: String(user.avatar),
       secret: process.env.JWT_ACCESS_SECRET_KEY,
       expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
     });
@@ -90,6 +92,9 @@ export class AuthService {
     const user = await this.usersService.findByEmail(body.email, true);
 
     if (!user) {
+      this.logger.error(
+        `SignIn-[block]:(not found email). email: ${body.email}`,
+      );
       throw new BadRequestException('Email or password is incorrect');
     }
 

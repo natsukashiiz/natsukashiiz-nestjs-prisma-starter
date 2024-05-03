@@ -34,7 +34,7 @@ export class Pagination {
     return {
       take: this.limit,
       skip: this.page,
-      orderBy: this.sort_fields.map((field) => {
+      orderBy: this.sort_fields?.map((field) => {
         return {
           [field]: this.sort,
         };

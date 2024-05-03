@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { SignHistoryService } from './sign-history.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Auth } from 'src/auth/auth.decorator';
@@ -11,6 +11,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Pagination } from 'src/pagination/pagination.model';
 
 @Controller('sign-history')
 @UseGuards(JwtAuthGuard)
@@ -30,7 +31,7 @@ export class SignHistoryController {
   @ApiOkResponse({
     description: 'Get sign history successfully',
   })
-  findAll(@Auth() auth: User) {
-    return this.signHistoryService.findByUid(auth.id);
+  findAll(@Query() params: Pagination, @Auth() auth: User) {
+    return this.signHistoryService.findByUidAndPagination(auth.id, params);
   }
 }

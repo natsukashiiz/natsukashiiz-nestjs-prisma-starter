@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { Pagination } from 'src/pagination/pagination.model';
 
 @Injectable()
 export class SignHistoryService {
@@ -23,6 +24,21 @@ export class SignHistoryService {
       orderBy: {
         cdt: 'desc',
       },
+    });
+  }
+
+  async findByUidAndPagination(uid: number, pagination: Pagination) {
+    return await this.prisma.signHistory.findMany({
+      where: {
+        uid,
+      },
+      select: {
+        id: true,
+        device: true,
+        ip: true,
+        cdt: true,
+      },
+      ...pagination.data(),
     });
   }
 

@@ -10,11 +10,14 @@ import { FilesModule } from './files/files.module';
 import { RedisModule } from './redis/redis.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { AppController } from './app.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CatModule } from './cat/cat.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     PrismaModule,
+    MongooseModule.forRoot(process.env.MONGO_URL),
     RedisModule,
     UsersModule,
     AuthModule,
@@ -22,6 +25,7 @@ import { AppController } from './app.controller';
     SignHistoryModule,
     FilesModule,
     GatewayModule,
+    CatModule,
   ],
   controllers: [AppController],
 })

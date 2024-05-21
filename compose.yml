@@ -21,7 +21,27 @@ services:
     networks:
       - server-net
 
+  mongo:
+    image: mongo
+    container_name: mongo_nest101
+    ports:
+      - "27017:27017"
+    networks:
+      - server-net
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_express_nest101
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - server-net
+
 volumes:
   mysql-data:
+  redis-data:
+  mongo-data:
 networks:
   server-net:

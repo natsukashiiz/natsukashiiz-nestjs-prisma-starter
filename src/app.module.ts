@@ -10,6 +10,7 @@ import { FilesModule } from './files/files.module';
 import { RedisModule } from './redis/redis.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { AppController } from './app.controller';
+import { VideoModule } from './video/video.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AppController } from './app.controller';
     SignHistoryModule,
     FilesModule,
     GatewayModule,
+    VideoModule,
   ],
   controllers: [AppController],
 })

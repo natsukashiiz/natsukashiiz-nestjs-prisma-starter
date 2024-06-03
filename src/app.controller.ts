@@ -10,7 +10,7 @@ export class AppController {
       title: 'NestJS 101',
       description: 'NestJS 101',
       version: '1.0.0',
-      document: '/document',
+      document: '/' + process.env.SWAGGER_PATH || 'document',
     };
   }
 }
